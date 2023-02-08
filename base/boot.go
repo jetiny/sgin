@@ -87,6 +87,7 @@ func boot(features BootFeature) (*common.BootContext, error) {
 		if hasFeature(features, BootWithLogger) {
 			engine.SetLogger(gxormLogger)
 		}
+		res.Xorm = engine
 	}
 	common.SetBootContext(res)
 	return res, nil
