@@ -8,7 +8,7 @@ import (
 )
 
 func initSession() (gin.HandlerFunc, error) {
-	rstore, err := redisStore.NewStore(10, "tcp", EnvRedisAddr.String(), "", []byte(EnvSessionSecret.String()))
+	rstore, err := redisStore.NewStore(10, "tcp", gEnvRedisAddr.String(), "", []byte(gEnvSessionSecret.String()))
 	if err != nil {
 		return nil, err
 	}
@@ -16,9 +16,9 @@ func initSession() (gin.HandlerFunc, error) {
 	if err != nil {
 		return nil, err
 	}
-	realStore.DefaultMaxAge = EnvSessionExpiredHour.Int() * 60 * 60
-	realStore.SetKeyPrefix(EnvSessionStorePrefix.String())
-	realStore.SetMaxLength(EnvSessionStoreMaxSize.Int())
-	fun := sessions.Sessions(EnvSessionKey.String(), rstore)
+	realStore.DefaultMaxAge = gEnvSessionExpiredHour.Int() * 60 * 60
+	realStore.SetKeyPrefix(gEnvSessionStorePrefix.String())
+	realStore.SetMaxLength(gEnvSessionStoreMaxSize.Int())
+	fun := sessions.Sessions(gEnvSessionKey.String(), rstore)
 	return fun, nil
 }

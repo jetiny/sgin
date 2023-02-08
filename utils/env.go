@@ -9,7 +9,7 @@ type EnvKey string
 
 type EnvGetter struct {
 	Key          EnvKey
-	DefaultValue any
+	defaultValue any
 }
 
 var envMap map[EnvKey]any
@@ -28,14 +28,17 @@ func GetterDefault[T int | uint | int64 | uint64 | bool | string](key EnvKey, de
 	}
 	return &EnvGetter{
 		Key:          key,
-		DefaultValue: defaultValue,
+		defaultValue: defaultValue,
 	}
 }
 
 func Getter(key EnvKey) *EnvGetter {
+	if _, ok := envMap[key]; !ok {
+		envMap[key] = nil
+	}
 	return &EnvGetter{
 		Key:          key,
-		DefaultValue: nil,
+		defaultValue: nil,
 	}
 }
 
@@ -43,51 +46,55 @@ func (getter *EnvGetter) KeyName() string {
 	return string(getter.Key)
 }
 
+func (getter *EnvGetter) DefaultValue() any {
+	return getter.defaultValue
+}
+
 func (getter *EnvGetter) String() string {
-	if getter.DefaultValue == nil {
+	if getter.defaultValue == nil {
 		return GetEnv(getter.Key)
 	} else {
-		return GetEnvDefault(getter.Key, getter.DefaultValue.(string))
+		return GetEnvDefault(getter.Key, getter.defaultValue.(string))
 	}
 }
 
 func (getter *EnvGetter) Bool() bool {
-	if getter.DefaultValue == nil {
+	if getter.defaultValue == nil {
 		return GetEnvBool(getter.Key)
 	} else {
-		return GetEnvBoolDefault(getter.Key, getter.DefaultValue.(bool))
+		return GetEnvBoolDefault(getter.Key, getter.defaultValue.(bool))
 	}
 }
 
 func (getter *EnvGetter) Int() (r int) {
-	if getter.DefaultValue == nil {
+	if getter.defaultValue == nil {
 		return GetEnvIntDefault(getter.Key, r)
 	} else {
-		return GetEnvIntDefault(getter.Key, getter.DefaultValue.(int))
+		return GetEnvIntDefault(getter.Key, getter.defaultValue.(int))
 	}
 }
 
 func (getter *EnvGetter) Int64() (r int64) {
-	if getter.DefaultValue == nil {
+	if getter.defaultValue == nil {
 		return GetEnvIntDefault(getter.Key, r)
 	} else {
-		return GetEnvIntDefault(getter.Key, getter.DefaultValue.(int64))
+		return GetEnvIntDefault(getter.Key, getter.defaultValue.(int64))
 	}
 }
 
 func (getter *EnvGetter) UInt() (r uint) {
-	if getter.DefaultValue == nil {
+	if getter.defaultValue == nil {
 		return GetEnvIntDefault(getter.Key, r)
 	} else {
-		return GetEnvIntDefault(getter.Key, getter.DefaultValue.(uint))
+		return GetEnvIntDefault(getter.Key, getter.defaultValue.(uint))
 	}
 }
 
 func (getter *EnvGetter) UInt64() (r uint64) {
-	if getter.DefaultValue == nil {
+	if getter.defaultValue == nil {
 		return GetEnvIntDefault(getter.Key, r)
 	} else {
-		return GetEnvIntDefault(getter.Key, getter.DefaultValue.(uint64))
+		return GetEnvIntDefault(getter.Key, getter.defaultValue.(uint64))
 	}
 }
 

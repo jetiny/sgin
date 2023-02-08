@@ -8,7 +8,7 @@ import (
 )
 
 func initMysql() (*xorm.Engine, error) {
-	engine, err := xorm.NewEngine("mysql", EnvMysqlAddr.String())
+	engine, err := xorm.NewEngine("mysql", gEnvMysqlAddr.String())
 	if err != nil {
 		return nil, err
 	}

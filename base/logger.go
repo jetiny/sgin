@@ -2,10 +2,11 @@ package base
 
 import (
 	"io"
-	"jetiny/sgin/common"
 	"os"
 	"path"
 	"time"
+
+	"github.com/jetiny/sgin/common"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-xorm/xorm"
@@ -17,9 +18,9 @@ import (
 
 var gxormLogger *xorm.SimpleLogger
 
-func InitLogger() error {
-	logFilePath := EnvLogDir.String()
-	logFileName := EnvLogFileName.String()
+func initLogger() error {
+	logFilePath := gEnvLogDir.String()
+	logFileName := gEnvLogFileName.String()
 	err := os.MkdirAll(logFilePath, 0777)
 	if err != nil {
 		return err
@@ -44,7 +45,7 @@ func InitLogger() error {
 	logger := common.Logger
 
 	//设置日志级别
-	level := logrus.Level(EnvLogLevel.Int())
+	level := logrus.Level(gEnvLogLevel.Int())
 	logger.SetLevel(level)
 	//设置输出
 	logger.Out = writer
@@ -56,9 +57,9 @@ func InitLogger() error {
 		// 生成软链，指向最新日志文件
 		rotatelogs.WithLinkName(fileName),
 		// 设置最大保存时间(7天)
-		rotatelogs.WithMaxAge(time.Duration(EnvLogExpired.Int())*time.Hour),
+		rotatelogs.WithMaxAge(time.Duration(gEnvLogExpired.Int())*time.Hour),
 		// 设置日志切割时间间隔(1天)
-		rotatelogs.WithRotationTime(time.Duration(EnvLogCutDays.Int())*time.Hour),
+		rotatelogs.WithRotationTime(time.Duration(gEnvLogCutDays.Int())*time.Hour),
 	)
 	if err != nil {
 		return err

@@ -1,4 +1,4 @@
-module jetiny/sgin
+module github.com/jetiny/sgin
 
 go 1.19
 

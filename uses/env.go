@@ -1,6 +1,6 @@
 package uses
 
-import "jetiny/sgin/utils"
+import "github.com/jetiny/sgin/utils"
 
 var (
 	// Redis

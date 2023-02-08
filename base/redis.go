@@ -2,7 +2,8 @@ package base
 
 import (
 	"context"
-	"jetiny/sgin/common"
+
+	"github.com/jetiny/sgin/common"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -30,10 +31,10 @@ func (hook *redisHook) AfterProcessPipeline(ctx context.Context, cmds []redis.Cm
 
 func initRedis() (*redis.Client, error) {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     EnvRedisAddr.String(),
-		Password: EnvRedisPassword.String(), // no password set
-		DB:       EnvRedisDb.Int(),          // use default DB
-		PoolSize: EnvRedisDb.Int(),          // 连接池大小
+		Addr:     gEnvRedisAddr.String(),
+		Password: gEnvRedisPassword.String(), // no password set
+		DB:       gEnvRedisDb.Int(),          // use default DB
+		PoolSize: gEnvRedisDb.Int(),          // 连接池大小
 	})
 	rdb.AddHook(&redisHook{})
 	ctx := context.Background()

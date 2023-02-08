@@ -2,8 +2,9 @@ package common
 
 import (
 	"encoding/json"
-	"jetiny/sgin/utils"
 	"time"
+
+	"github.com/jetiny/sgin/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,7 +57,7 @@ func GetEnvConfig[T int | uint | int64 | uint64 | bool | string | []any | map[st
 	if ok {
 		return value.(T)
 	}
-	return env.DefaultValue.(T)
+	return env.DefaultValue().(T)
 }
 
 func GetAppConfig[T int | uint | int64 | uint64 | bool | string | []any | map[string]any](s *AppModel, key string, defaultValue T) T {

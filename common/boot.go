@@ -21,6 +21,7 @@ type BootContext struct {
 	LogHandle       LogHandler
 	Routes          []*Route
 	Tasks           map[string][]gin.HandlerFunc
+	Addr            string
 }
 
 var gBootContext *BootContext
@@ -43,6 +44,10 @@ func (s *BootContext) WithTask(tasks map[string][]gin.HandlerFunc) {
 	for k, v := range tasks {
 		s.Tasks[k] = v
 	}
+}
+
+func (s BootContext) PrintAddr() {
+	Logger.Println("http://" + s.Addr)
 }
 
 type BootPlugin func(ctx *BootContext, r *gin.Engine)

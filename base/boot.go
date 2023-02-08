@@ -2,10 +2,11 @@ package base
 
 import (
 	"errors"
-	"jetiny/sgin/common"
-	"jetiny/sgin/utils"
 	"log"
+	"strconv"
 
+	"github.com/jetiny/sgin/common"
+	"github.com/jetiny/sgin/utils"
 	"github.com/joho/godotenv"
 )
 
@@ -43,6 +44,7 @@ func bootError(name string, err error) error {
 func boot(features BootFeature) (*common.BootContext, error) {
 	res := &common.BootContext{
 		Routes: make([]*common.Route, 0),
+		Addr:   gEnvHost.String() + ":" + strconv.Itoa(gEnvPort.Int()),
 	}
 	if hasFeature(features, BootWithEnv) {
 		err := godotenv.Load()
@@ -51,13 +53,13 @@ func boot(features BootFeature) (*common.BootContext, error) {
 		}
 	}
 	if hasFeature(features, BootWithLogger) {
-		err := InitLogger()
+		err := initLogger()
 		if err != nil {
 			return nil, bootError("logger", err)
 		}
 		res.Logger = common.Logger
 	}
-	err := utils.InitSnowflake(int64(EnvNode.Int()))
+	err := utils.InitSnowflake(int64(gEnvNode.Int()))
 	if err != nil {
 		return nil, bootError("snowflake", err)
 	}
@@ -86,10 +88,6 @@ func boot(features BootFeature) (*common.BootContext, error) {
 	}
 	common.SetBootContext(res)
 	return res, nil
-}
-
-func MustBootAll() *common.BootContext {
-	return MustBoot(BootWithAll)
 }
 
 func MustBoot(features BootFeature) *common.BootContext {

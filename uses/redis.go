@@ -3,8 +3,9 @@ package uses
 import (
 	"context"
 	"encoding/json"
-	"jetiny/sgin/common"
 	"time"
+
+	"github.com/jetiny/sgin/common"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
