@@ -1,8 +1,8 @@
 package uses
 
 import (
-	"sgin/common"
-	"sgin/utils"
+	"jetiny/sgin/common"
+	"jetiny/sgin/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-xorm/xorm"

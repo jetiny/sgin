@@ -2,9 +2,9 @@ package base
 
 import (
 	"io"
+	"jetiny/sgin/common"
 	"os"
 	"path"
-	"sgin/common"
 	"time"
 
 	"github.com/gin-gonic/gin"

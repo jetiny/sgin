@@ -3,7 +3,7 @@ package uses
 import (
 	"context"
 	"encoding/json"
-	"sgin/common"
+	"jetiny/sgin/common"
 	"time"
 
 	"github.com/gin-gonic/gin"

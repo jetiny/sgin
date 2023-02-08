@@ -1,7 +1,7 @@
 package base
 
 import (
-	"sgin/utils"
+	"jetiny/sgin/utils"
 
 	"github.com/sirupsen/logrus"
 )

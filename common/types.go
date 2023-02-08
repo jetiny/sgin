@@ -2,7 +2,7 @@ package common
 
 import (
 	"encoding/json"
-	"sgin/utils"
+	"jetiny/sgin/utils"
 	"time"
 
 	"github.com/gin-gonic/gin"

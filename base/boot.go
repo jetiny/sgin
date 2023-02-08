@@ -2,9 +2,9 @@ package base
 
 import (
 	"errors"
+	"jetiny/sgin/common"
+	"jetiny/sgin/utils"
 	"log"
-	"sgin/common"
-	"sgin/utils"
 
 	"github.com/joho/godotenv"
 )

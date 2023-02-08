@@ -1,6 +1,6 @@
 package uses
 
-import "sgin/utils"
+import "jetiny/sgin/utils"
 
 const (
 	gErrAppCodeInvalid    utils.ClientErrorCode = "client.noAppCode"   // 没有appCode

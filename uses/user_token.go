@@ -1,7 +1,7 @@
 package uses
 
 import (
-	"sgin/common"
+	"jetiny/sgin/common"
 
 	"github.com/gin-gonic/gin"
 )

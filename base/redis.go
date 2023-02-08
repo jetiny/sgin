@@ -2,7 +2,7 @@ package base
 
 import (
 	"context"
-	"sgin/common"
+	"jetiny/sgin/common"
 
 	"github.com/go-redis/redis/v8"
 )

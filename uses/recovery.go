@@ -2,10 +2,10 @@ package uses
 
 import (
 	"encoding/json"
+	"jetiny/sgin/common"
+	"jetiny/sgin/utils"
 	"log"
 	"net/http/httputil"
-	"sgin/common"
-	"sgin/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-errors/errors"
