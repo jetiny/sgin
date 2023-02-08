@@ -7,6 +7,7 @@ import (
 )
 
 func Setup(ctx *common.BootContext, r *gin.Engine) {
+	r.Use(withCors())
 	r.Use(withCtx())
 	if ctx.SessionHandle != nil {
 		r.Use(ctx.SessionHandle)
