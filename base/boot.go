@@ -5,6 +5,7 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/jetiny/sgin/common"
 	"github.com/jetiny/sgin/utils"
 	"github.com/joho/godotenv"
@@ -44,6 +45,7 @@ func bootError(name string, err error) error {
 func boot(features BootFeature) (*common.BootContext, error) {
 	res := &common.BootContext{
 		Routes: make([]*common.Route, 0),
+		Tasks:  make(map[string][]gin.HandlerFunc),
 		Addr:   gEnvHost.String() + ":" + strconv.Itoa(gEnvPort.Int()),
 	}
 	if hasFeature(features, BootWithEnv) {
