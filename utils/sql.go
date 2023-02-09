@@ -11,11 +11,11 @@ const (
 )
 
 func SqlNotDeleted() string {
-	return "deleted_stauts = " + strconv.Itoa(int(DeleteStatusDefault))
+	return "deleted_status = " + strconv.Itoa(int(DeleteStatusDefault))
 }
 
 func SqlDeleted() string {
-	return "deleted_stauts = " + strconv.Itoa(int(DeleteStatusDeleted))
+	return "deleted_status = " + strconv.Itoa(int(DeleteStatusDeleted))
 }
 
 func SqlWhereGt(field string) string {
