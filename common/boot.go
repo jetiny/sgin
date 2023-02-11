@@ -1,6 +1,8 @@
 package common
 
 import (
+	"sync"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/go-xorm/xorm"
@@ -22,9 +24,17 @@ type BootContext struct {
 	Routes          []*Route
 	Tasks           map[string][]gin.HandlerFunc
 	Addr            string
+	data            sync.Map
 }
 
 var gBootContext *BootContext
+
+func NewBootContext() *BootContext {
+	return &BootContext{
+		Tasks:  make(map[string][]gin.HandlerFunc),
+		Routes: make([]*Route, 0),
+	}
+}
 
 func SetBootContext(bootContext *BootContext) {
 	gBootContext = bootContext
@@ -38,6 +48,23 @@ func (s *BootContext) WithRoutes(routes ...[]*Route) {
 	for _, v := range routes {
 		s.Routes = append(s.Routes, v...)
 	}
+}
+
+func (s *BootContext) Get(key string) any {
+	v, ok := s.data.Load(key)
+	if ok {
+		return v
+	}
+	return nil
+}
+
+func (s *BootContext) Load(key string) (any, bool) {
+	v, ok := s.data.Load(key)
+	return v, ok
+}
+
+func (s *BootContext) Set(key string, value any) {
+	s.data.Store(key, value)
 }
 
 func (s *BootContext) WithTask(tasks map[string][]gin.HandlerFunc) {
