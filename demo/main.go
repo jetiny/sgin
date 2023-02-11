@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -9,6 +10,19 @@ import (
 	"github.com/jetiny/sgin/common"
 	"github.com/jetiny/sgin/uses"
 )
+
+func h(ctx *gin.Context) {
+	sgin.GetCtx(ctx).Success("Ok!")
+}
+
+func p(c *gin.Context) {
+	fmt.Println(isFunctionEqual(c.Handler(), p))
+	sgin.GetCtx(c).Pass()
+}
+
+func isFunctionEqual(v any, i any) bool {
+	return fmt.Sprintf("%v", v) == fmt.Sprintf("%v", i)
+}
 
 func main() {
 	ctx := sgin.MustBootAll()
@@ -30,14 +44,11 @@ func main() {
 		}
 	}
 	ctx.WithRoutes([]*common.Route{
-		{Method: http.MethodPost, Path: "/user/profile/info", EnsureAuth: true, Handle: func(ctx *gin.Context) {
-			sgin.GetCtx(ctx).Pass()
-		}},
+		{Method: http.MethodPost, Path: "/user/profile/info", EnsureAuth: true, Handle: h},
+		{Method: http.MethodGet, Path: "/path/*value", EnsureAuth: false, Handle: h},
 	})
 	ctx.Install(r, func(ctx *common.BootContext, r *gin.Engine) {
-		r.GET("/pass", func(c *gin.Context) {
-			sgin.GetCtx(c).Pass()
-		})
+		r.GET("/pass", p)
 	})
 	uses.Setup(ctx, r)
 	ctx.PrintAddr()

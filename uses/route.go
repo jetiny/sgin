@@ -53,7 +53,7 @@ func getRoute(c *gin.Context) *common.Route {
 	}
 	routes := c.MustGet(gRoutesKey).([]*common.Route)
 	for _, route := range routes {
-		if route.Path == c.Request.URL.Path {
+		if route.Path == c.FullPath() && route.Method == c.Request.Method {
 			c.Set(routeKey, route)
 			return route
 		}

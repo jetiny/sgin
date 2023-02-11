@@ -11,11 +11,7 @@ const appKey = "appKey"
 func withAppModel(handler common.AppModelHandler) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		appCode := c.Request.Header.Get(gEnvHeaderAppCode.String())
-		if appCode != "" {
-			c.Set(appKey, handler(c, appCode))
-		} else {
-			c.Set(appKey, nil)
-		}
+		c.Set(appKey, handler(c, appCode))
 		c.Next()
 	}
 }

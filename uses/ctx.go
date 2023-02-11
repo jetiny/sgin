@@ -99,5 +99,13 @@ func withCtx() gin.HandlerFunc {
 }
 
 func GetCtx(c *gin.Context) *Ctx {
-	return c.MustGet(ctxKey).(*Ctx)
+	iter, exists := c.Get(ctxKey)
+	if !exists {
+		ctx := &Ctx{
+			c: c,
+		}
+		c.Set(ctxKey, ctx)
+		return ctx
+	}
+	return iter.(*Ctx)
 }
