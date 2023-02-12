@@ -26,9 +26,11 @@ func withRoute(r *gin.Engine, routes []*common.Route) {
 }
 
 func acceptRoute(c *gin.Context, route *common.Route) bool {
-	if getAppModel(c) == nil {
-		c.AbortWithError(gErrAppCodeInvalid.Error().GinError())
-		return false
+	if !route.NoAppCode {
+		if getAppModel(c) == nil {
+			c.AbortWithError(gErrAppCodeInvalid.Error().GinError())
+			return false
+		}
 	}
 	if route.EnsureAuth {
 		tokenValue := getUserToken(c)

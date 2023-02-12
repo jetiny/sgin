@@ -85,5 +85,6 @@ type Route struct {
 	Path       string
 	Method     string
 	EnsureAuth bool
+	NoAppCode  bool
 	Handle     gin.HandlerFunc
 }
