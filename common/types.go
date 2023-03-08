@@ -57,7 +57,7 @@ func GetEnvConfig[T int | uint | int64 | uint64 | bool | string | []any | map[st
 	if ok {
 		return value.(T)
 	}
-	return GetAppConfig(s, env.KeyName(), env.DefaultValue().(T))
+	return GetAppConfig(s, env.KeyName(), env.Value().(T))
 }
 
 func GetAppConfig[T int | uint | int64 | uint64 | bool | string | []any | map[string]any](s *AppModel, key string, defaultValue T) T {

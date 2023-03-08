@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os"
+	"reflect"
 	"strconv"
 )
 
@@ -48,6 +49,31 @@ func (getter *EnvGetter) KeyName() string {
 
 func (getter *EnvGetter) DefaultValue() any {
 	return getter.defaultValue
+}
+
+func (getter *EnvGetter) Value() any {
+	t := reflect.TypeOf(getter.defaultValue)
+	switch t.Kind() {
+	case reflect.Int:
+	case reflect.Int8:
+	case reflect.Int16:
+	case reflect.Int32:
+		return getter.Int()
+	case reflect.Uint:
+	case reflect.Uint8:
+	case reflect.Uint16:
+	case reflect.Uint32:
+		return getter.UInt()
+	case reflect.Uint64:
+		return getter.UInt64()
+	case reflect.Int64:
+		return getter.Int64()
+	case reflect.String:
+		return getter.String()
+	case reflect.Bool:
+		return getter.Bool()
+	}
+	return nil
 }
 
 func (getter *EnvGetter) String() string {
