@@ -4,6 +4,7 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"sync"
 )
 
 type EnvKey string
@@ -11,117 +12,88 @@ type EnvKey string
 type EnvGetter struct {
 	Key          EnvKey
 	defaultValue any
+	kind         reflect.Kind
 }
 
-var envMap map[EnvKey]any
+var envMap sync.Map
 
 func init() {
-	envMap = make(map[EnvKey]any, 0)
+	envMap = sync.Map{}
 }
 
-func GetEnvMap() map[EnvKey]any {
-	return envMap
-}
-
-func GetterDefault[T int | uint | int64 | uint64 | bool | string](key EnvKey, defaultValue T) *EnvGetter {
-	if _, ok := envMap[key]; !ok {
-		envMap[key] = defaultValue
+func getterOf(key EnvKey, defaultValue any, kind reflect.Kind) *EnvGetter {
+	ref, ok := envMap.Load(key)
+	if !ok {
+		ref = &EnvGetter{
+			Key:          key,
+			defaultValue: defaultValue,
+			kind:         kind,
+		}
+		envMap.Store(key, ref)
 	}
-	return &EnvGetter{
-		Key:          key,
-		defaultValue: defaultValue,
-	}
+	return ref.(*EnvGetter)
 }
 
 func Getter(key EnvKey) *EnvGetter {
-	if _, ok := envMap[key]; !ok {
-		envMap[key] = nil
+	if ref, ok := envMap.Load(key); ok {
+		return ref.(*EnvGetter)
 	}
-	return &EnvGetter{
-		Key:          key,
-		defaultValue: nil,
-	}
+	return nil
+}
+
+func GetterDefault[T int | int8 | int16 | int32 | int64 |
+	uint | uint8 | uint16 | uint32 | uint64 |
+	string | bool](key EnvKey, defaultValue T) *EnvGetter {
+	return getterOf(key, defaultValue, reflect.TypeOf(defaultValue).Kind())
 }
 
 func (getter *EnvGetter) KeyName() string {
 	return string(getter.Key)
 }
 
-func (getter *EnvGetter) DefaultValue() any {
-	return getter.defaultValue
+func (getter *EnvGetter) Kind() reflect.Kind {
+	return getter.kind
 }
 
 func (getter *EnvGetter) Value() any {
-	t := reflect.TypeOf(getter.defaultValue)
-	switch t.Kind() {
-	case reflect.Int:
-	case reflect.Int8:
-	case reflect.Int16:
-	case reflect.Int32:
+	if getter.kind == reflect.Int || getter.kind == reflect.Int8 || getter.kind == reflect.Int16 || getter.kind == reflect.Int32 {
 		return getter.Int()
-	case reflect.Uint:
-	case reflect.Uint8:
-	case reflect.Uint16:
-	case reflect.Uint32:
+	} else if getter.kind == reflect.Uint || getter.kind == reflect.Uint8 || getter.kind == reflect.Uint16 || getter.kind == reflect.Uint32 {
 		return getter.UInt()
-	case reflect.Uint64:
-		return getter.UInt64()
-	case reflect.Int64:
+	} else if getter.kind == reflect.Int64 {
 		return getter.Int64()
-	case reflect.String:
+	} else if getter.kind == reflect.Uint64 {
+		return getter.UInt64()
+	} else if getter.kind == reflect.String {
 		return getter.String()
-	case reflect.Bool:
+	} else if getter.kind == reflect.Bool {
 		return getter.Bool()
 	}
 	return nil
 }
 
 func (getter *EnvGetter) String() string {
-	if getter.defaultValue == nil {
-		return GetEnv(getter.Key)
-	} else {
-		return GetEnvDefault(getter.Key, getter.defaultValue.(string))
-	}
+	return GetEnvDefault(getter.Key, getter.defaultValue.(string))
 }
 
 func (getter *EnvGetter) Bool() bool {
-	if getter.defaultValue == nil {
-		return GetEnvBool(getter.Key)
-	} else {
-		return GetEnvBoolDefault(getter.Key, getter.defaultValue.(bool))
-	}
+	return GetEnvBoolDefault(getter.Key, getter.defaultValue.(bool))
 }
 
 func (getter *EnvGetter) Int() (r int) {
-	if getter.defaultValue == nil {
-		return GetEnvIntDefault(getter.Key, r)
-	} else {
-		return GetEnvIntDefault(getter.Key, getter.defaultValue.(int))
-	}
+	return GetEnvIntDefault(getter.Key, getter.defaultValue.(int))
 }
 
 func (getter *EnvGetter) Int64() (r int64) {
-	if getter.defaultValue == nil {
-		return GetEnvIntDefault(getter.Key, r)
-	} else {
-		return GetEnvIntDefault(getter.Key, getter.defaultValue.(int64))
-	}
+	return GetEnvIntDefault(getter.Key, getter.defaultValue.(int64))
 }
 
 func (getter *EnvGetter) UInt() (r uint) {
-	if getter.defaultValue == nil {
-		return GetEnvIntDefault(getter.Key, r)
-	} else {
-		return GetEnvIntDefault(getter.Key, getter.defaultValue.(uint))
-	}
+	return GetEnvIntDefault(getter.Key, getter.defaultValue.(uint))
 }
 
 func (getter *EnvGetter) UInt64() (r uint64) {
-	if getter.defaultValue == nil {
-		return GetEnvIntDefault(getter.Key, r)
-	} else {
-		return GetEnvIntDefault(getter.Key, getter.defaultValue.(uint64))
-	}
+	return GetEnvIntDefault(getter.Key, getter.defaultValue.(uint64))
 }
 
 func GetEnv(name EnvKey) string {
