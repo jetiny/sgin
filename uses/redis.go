@@ -117,6 +117,14 @@ func (rc *rediCache) GetToken(accessToken string) (*common.UserToken, error) {
 	return nil, err
 }
 
+func (rc *rediCache) Del(key string) error {
+	err := rc.r.Del(context.Background(), gEnvRedisTokenPrefix.String()+key).Err()
+	if isRedisNil(err) {
+		return nil
+	}
+	return err
+}
+
 func (rc *rediCache) DelToken(accessToken string) error {
 	err := rc.r.Del(context.Background(), gEnvRedisTokenPrefix.String()+accessToken).Err()
 	if isRedisNil(err) {
