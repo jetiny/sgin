@@ -34,6 +34,11 @@ func (rc rediCache) Client() *redis.Client {
 	return rc.r
 }
 
+func (rc *rediCache) Set(key string, value any, dur time.Duration) error {
+	key = gEnvRedisKeyPrefix.String() + key
+	return rc.r.Set(context.Background(), key, value, dur).Err()
+}
+
 func (rc *rediCache) SetJson(key string, value any, dur time.Duration) error {
 	buf, err := json.Marshal(value)
 	if err != nil {
@@ -56,6 +61,29 @@ func (rc *rediCache) GetJson(key string, value any) (bool, error) {
 	}
 	bytes = str
 	return true, json.Unmarshal(bytes, value)
+}
+
+func (rc *rediCache) GetInt(key string) (int, bool) {
+	key = gEnvRedisKeyPrefix.String() + key
+	value, err := rc.r.Get(context.Background(), key).Int()
+	if isRedisNil(err) {
+		return value, false
+	}
+	return value, true
+}
+
+func (rc *rediCache) GetBool(key string) (bool, bool) {
+	key = gEnvRedisKeyPrefix.String() + key
+	value, err := rc.r.Get(context.Background(), key).Bool()
+	if isRedisNil(err) {
+		return value, false
+	}
+	return value, true
+}
+
+func (rc *rediCache) GetString(key string) string {
+	key = gEnvRedisKeyPrefix.String() + key
+	return rc.r.Get(context.Background(), key).String()
 }
 
 func (rc *rediCache) SetToken(token *common.UserToken) error {
