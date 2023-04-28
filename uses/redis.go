@@ -72,6 +72,24 @@ func (rc *rediCache) GetInt(key string) (int, bool) {
 	return value, true
 }
 
+func (rc *rediCache) GetInt64(key string) (int64, bool) {
+	key = gEnvRedisKeyPrefix.String() + key
+	value, err := rc.r.Get(context.Background(), key).Int64()
+	if isRedisNil(err) {
+		return value, false
+	}
+	return value, true
+}
+
+func (rc *rediCache) GetUint64(key string) (uint64, bool) {
+	key = gEnvRedisKeyPrefix.String() + key
+	value, err := rc.r.Get(context.Background(), key).Uint64()
+	if isRedisNil(err) {
+		return value, false
+	}
+	return value, true
+}
+
 func (rc *rediCache) GetBool(key string) (bool, bool) {
 	key = gEnvRedisKeyPrefix.String() + key
 	value, err := rc.r.Get(context.Background(), key).Bool()
@@ -83,7 +101,7 @@ func (rc *rediCache) GetBool(key string) (bool, bool) {
 
 func (rc *rediCache) GetString(key string) string {
 	key = gEnvRedisKeyPrefix.String() + key
-	return rc.r.Get(context.Background(), key).String()
+	return rc.r.Get(context.Background(), key).Val()
 }
 
 func (rc *rediCache) SetToken(token *common.UserToken) error {
