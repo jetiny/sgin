@@ -78,6 +78,10 @@ func (ctx *Ctx) Token() *common.UserToken {
 	return getUserToken(ctx.c)
 }
 
+func (ctx *Ctx) GetToken() *common.UserToken {
+	return hasUserToken(ctx.c)
+}
+
 func (ctx *Ctx) Route() *common.Route {
 	return getRoute(ctx.c)
 }
