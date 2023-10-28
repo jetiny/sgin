@@ -44,9 +44,10 @@ func bootError(name string, err error) error {
 
 func boot(features BootFeature) (*common.BootContext, error) {
 	res := &common.BootContext{
-		Routes: make([]*common.Route, 0),
-		Tasks:  make(map[string][]gin.HandlerFunc),
-		Addr:   gEnvHost.String() + ":" + strconv.Itoa(gEnvPort.Int()),
+		Routes:        make([]*common.Route, 0),
+		Tasks:         make(map[string][]gin.HandlerFunc),
+		TokenHandlers: make(map[string]common.TokenHandler),
+		Addr:          gEnvHost.String() + ":" + strconv.Itoa(gEnvPort.Int()),
 	}
 	if hasFeature(features, BootWithEnv) {
 		err := godotenv.Load()

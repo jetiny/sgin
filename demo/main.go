@@ -35,14 +35,14 @@ func main() {
 			AppName: "8888",
 		}
 	}
-	ctx.TokenHandle = func(c *gin.Context, token string) *common.UserToken {
+	ctx.SetTokenHandler("", func(c *gin.Context, token string) *common.UserToken {
 		return &common.UserToken{
 			AccessToken:      token,
 			RefreshToken:     token,
 			AccessExpiredAt:  time.Now().Add(time.Hour * 100),
 			RefreshExpiredAt: time.Now().Add(time.Hour * 100),
 		}
-	}
+	})
 	ctx.WithRoutes([]*common.Route{
 		{Method: http.MethodPost, Path: "/user/profile/info", EnsureAuth: true, Handle: h},
 		{Method: http.MethodGet, Path: "/path/*value", EnsureAuth: false, Handle: h},

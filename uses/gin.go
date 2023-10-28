@@ -29,9 +29,6 @@ func Setup(ctx *common.BootContext, r *gin.Engine) {
 	if ctx.AppModdelHandle != nil {
 		r.Use(withAppModel(ctx.AppModdelHandle))
 	}
-	if ctx.TokenHandle != nil {
-		r.Use(withUserToken(ctx.TokenHandle))
-	}
 	if ctx.Tasks != nil {
 		r.Use(withTask(ctx.Tasks))
 	}

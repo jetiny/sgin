@@ -13,6 +13,12 @@ func withRoute(r *gin.Engine, routes []*common.Route, tokenHandlers map[string]c
 		c.Set(gRoutesKey, routes)
 		route := getRoute(c)
 		if route != nil {
+			token := c.Request.Header.Get(gEnvHeaderAccessToken.String())
+			if token != "" {
+				c.Set(tokenKey, tokenHandlers[route.TokenKey](c, token))
+			} else {
+				c.Set(tokenKey, nil)
+			}
 			if acceptRoute(c, route) {
 				c.Next()
 			}

@@ -18,7 +18,6 @@ type BootContext struct {
 	Redis           *redis.Client
 	SessionHandle   gin.HandlerFunc
 	Logger          *logrus.Logger
-	TokenHandle     TokenHandler
 	TokenHandlers   map[string]TokenHandler
 	AppModdelHandle AppModelHandler
 	LogHandle       LogHandler
@@ -83,7 +82,7 @@ func (s *BootContext) WithTask(tasks map[string][]gin.HandlerFunc) {
 	}
 }
 
-func (s BootContext) PrintAddr() {
+func (s *BootContext) PrintAddr() {
 	Logger.Println("http://" + s.Addr)
 }
 
