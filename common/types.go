@@ -16,6 +16,7 @@ type UserToken struct {
 	CreatedAt        time.Time `json:"createdAt"`
 	AccessExpiredAt  time.Time `json:"accessExpiredAt"`
 	RefreshExpiredAt time.Time `json:"refreshExpiredAt"`
+	TokenKey         string    `json:"tokenKey"`
 }
 
 func (s UserToken) IsTokenExpired() bool {
@@ -87,4 +88,5 @@ type Route struct {
 	EnsureAuth bool
 	NoAppCode  bool
 	Handle     gin.HandlerFunc
+	TokenKey   string
 }

@@ -8,7 +8,7 @@ import (
 
 const gRoutesKey = "routesKey"
 
-func withRoute(r *gin.Engine, routes []*common.Route) {
+func withRoute(r *gin.Engine, routes []*common.Route, tokenHandlers map[string]common.TokenHandler) {
 	handler := r.Use(func(c *gin.Context) {
 		c.Set(gRoutesKey, routes)
 		route := getRoute(c)
@@ -40,6 +40,10 @@ func acceptRoute(c *gin.Context, route *common.Route) bool {
 		}
 		if tokenValue.IsTokenExpired() {
 			c.AbortWithError(gErrAuthTokenExpired.Error().GinError())
+			return false
+		}
+		if tokenValue.TokenKey != route.TokenKey {
+			c.AbortWithError(gErrAuthTokenKeyInvalid.Error().GinError())
 			return false
 		}
 	}

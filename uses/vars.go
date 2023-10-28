@@ -3,7 +3,8 @@ package uses
 import "github.com/jetiny/sgin/utils"
 
 const (
-	gErrAppCodeInvalid    utils.ClientErrorCode = "client.noAppCode"   // 没有appCode
-	gErrAuthLoginRequired utils.ClientErrorCode = "auth.loginRequired" // 需要登录
-	gErrAuthTokenExpired  utils.ClientErrorCode = "auth.tokenExpired"  // 访问令牌已过期
+	gErrAppCodeInvalid      utils.ClientErrorCode = "client.noAppCode"     // 没有appCode
+	gErrAuthLoginRequired   utils.ClientErrorCode = "auth.loginRequired"   // 需要登录
+	gErrAuthTokenExpired    utils.ClientErrorCode = "auth.tokenExpired"    // 访问令牌已过期
+	gErrAuthTokenKeyInvalid utils.ClientErrorCode = "auth.tokenKeyInvalid" // 访问令牌不匹配
 )

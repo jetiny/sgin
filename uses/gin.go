@@ -36,6 +36,6 @@ func Setup(ctx *common.BootContext, r *gin.Engine) {
 		r.Use(withTask(ctx.Tasks))
 	}
 	if ctx.Routes != nil && len(ctx.Routes) > 0 {
-		withRoute(r, ctx.Routes)
+		withRoute(r, ctx.Routes, ctx.TokenHandlers)
 	}
 }

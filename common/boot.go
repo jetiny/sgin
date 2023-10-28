@@ -19,6 +19,7 @@ type BootContext struct {
 	SessionHandle   gin.HandlerFunc
 	Logger          *logrus.Logger
 	TokenHandle     TokenHandler
+	TokenHandlers   map[string]TokenHandler
 	AppModdelHandle AppModelHandler
 	LogHandle       LogHandler
 	Routes          []*Route
@@ -31,8 +32,9 @@ var gBootContext *BootContext
 
 func NewBootContext() *BootContext {
 	return &BootContext{
-		Tasks:  make(map[string][]gin.HandlerFunc),
-		Routes: make([]*Route, 0),
+		Tasks:         make(map[string][]gin.HandlerFunc),
+		Routes:        make([]*Route, 0),
+		TokenHandlers: make(map[string]TokenHandler),
 	}
 }
 
@@ -56,6 +58,14 @@ func (s *BootContext) Get(key string) any {
 		return v
 	}
 	return nil
+}
+
+func (s *BootContext) SetTokenHandler(key string, handler TokenHandler) {
+	s.TokenHandlers[key] = handler
+}
+
+func (s *BootContext) GetTokenHandler(key string) TokenHandler {
+	return s.TokenHandlers[key]
 }
 
 func (s *BootContext) Load(key string) (any, bool) {
