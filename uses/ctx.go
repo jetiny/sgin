@@ -53,6 +53,17 @@ func (ctx *Ctx) Success(data any) {
 	ctx.c.JSON(200, res)
 }
 
+func (ctx *Ctx) Page(data any, total int64) {
+	ctx.pageInfo.Total = total
+	res := utils.Data[any]{
+		Code:     gHttpSuccessCode,
+		Data:     data,
+		Message:  gHttpSuccessMessage,
+		PageInfo: ctx.pageInfo,
+	}
+	ctx.c.JSON(200, res)
+}
+
 // mixed
 func (ctx Ctx) Session() sessions.Session {
 	return getSession(ctx.c)
