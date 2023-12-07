@@ -27,10 +27,10 @@ func (ctx *Ctx) PageInfo() *utils.PageInfo {
 	pageInfo := &utils.PageInfo{}
 	err := ctx.c.ShouldBindBodyWith(pageInfo, binding.JSON)
 	if err != nil {
-		pageInfo.PageNumber = 1
+		pageInfo.Current = 1
 	}
-	if pageInfo.PageNumber == 0 {
-		pageInfo.PageNumber = 1
+	if pageInfo.Current == 0 {
+		pageInfo.Current = 1
 	}
 	if pageInfo.PageSize == 0 {
 		pageInfo.PageSize = 10

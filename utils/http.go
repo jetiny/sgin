@@ -1,17 +1,17 @@
 package utils
 
 type PageInfo struct {
-	PageNumber int    `json:"pageNumber,omitempty"`
-	PageSize   int    `json:"pageSize,omitempty"`
-	Total      int64  `json:"total,omitempty"`
-	PageToken  string `json:"token,omitempty"`
+	Current   int    `json:"current,omitempty"`
+	PageSize  int    `json:"pageSize,omitempty"`
+	Total     int64  `json:"total,omitempty"`
+	PageToken string `json:"token,omitempty"`
 }
 
 func (s PageInfo) Offset() int {
-	if s.PageNumber < 1 {
+	if s.Current < 1 {
 		return 0
 	}
-	return (s.PageNumber - 1) * s.PageSize
+	return (s.Current - 1) * s.PageSize
 }
 
 type Data[T any] struct {
