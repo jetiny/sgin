@@ -41,7 +41,7 @@ func acceptRoute(c *gin.Context, route *common.Route) bool {
 	if route.EnsureAuth {
 		tokenValue := getUserToken(c)
 		if tokenValue == nil {
-			c.AbortWithError(gErrAuthTokenExpired.Error().GinError())
+			c.AbortWithError(gErrAuthLoginRequired.Error().GinError())
 			return false
 		}
 		if tokenValue.IsTokenExpired() {
