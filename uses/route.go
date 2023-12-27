@@ -1,6 +1,8 @@
 package uses
 
 import (
+	"strings"
+
 	"github.com/jetiny/sgin/common"
 
 	"github.com/gin-gonic/gin"
@@ -48,7 +50,8 @@ func acceptRoute(c *gin.Context, route *common.Route) bool {
 			c.AbortWithError(gErrAuthTokenExpired.Error().GinError())
 			return false
 		}
-		if tokenValue.TokenKey != route.TokenKey {
+		if !(strings.Contains(route.TokenKey, tokenValue.TokenKey) ||
+			route.TokenKey == tokenValue.TokenKey) {
 			c.AbortWithError(gErrAuthTokenKeyInvalid.Error().GinError())
 			return false
 		}
