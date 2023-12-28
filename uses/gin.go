@@ -26,8 +26,8 @@ func Setup(ctx *common.BootContext, r *gin.Engine) {
 	if ctx.LogHandle != nil {
 		r.Use(withDbLog(ctx.LogHandle))
 	}
-	if ctx.AppModdelHandle != nil {
-		r.Use(withAppModel(ctx.AppModdelHandle))
+	if ctx.AppModelHandle != nil {
+		r.Use(withAppModel(ctx.AppModelHandle))
 	}
 	if ctx.Tasks != nil {
 		r.Use(withTask(ctx.Tasks))

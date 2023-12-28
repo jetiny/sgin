@@ -14,17 +14,17 @@ type AppModelHandler = func(c *gin.Context, appCode string) *AppModel
 type LogHandler func(c *gin.Context, tableId int, opId LogOpType, primaryId int64, data any)
 
 type BootContext struct {
-	Xorm            *xorm.Engine
-	Redis           *redis.Client
-	SessionHandle   gin.HandlerFunc
-	Logger          *logrus.Logger
-	TokenHandlers   map[string]TokenHandler
-	AppModdelHandle AppModelHandler
-	LogHandle       LogHandler
-	Routes          []*Route
-	Tasks           map[string][]gin.HandlerFunc
-	Addr            string
-	data            sync.Map
+	Xorm           *xorm.Engine
+	Redis          *redis.Client
+	SessionHandle  gin.HandlerFunc
+	Logger         *logrus.Logger
+	TokenHandlers  map[string]TokenHandler
+	AppModelHandle AppModelHandler
+	LogHandle      LogHandler
+	Routes         []*Route
+	Tasks          map[string][]gin.HandlerFunc
+	Addr           string
+	data           sync.Map
 }
 
 var gBootContext *BootContext

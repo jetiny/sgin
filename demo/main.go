@@ -28,7 +28,7 @@ func main() {
 	ctx := sgin.MustBootAll()
 	// ctx := sgin.MustBoot(base.BootWithNone)
 	r := gin.Default()
-	ctx.AppModdelHandle = func(c *gin.Context, appCode string) *common.AppModel {
+	ctx.AppModelHandle = func(c *gin.Context, appCode string) *common.AppModel {
 		return &common.AppModel{
 			AppId:   1,
 			AppCode: "8888",

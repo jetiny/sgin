@@ -17,7 +17,11 @@ func withRoute(r *gin.Engine, routes []*common.Route, tokenHandlers map[string]c
 		if route != nil {
 			token := c.Request.Header.Get(gEnvHeaderAccessToken.String())
 			if token != "" {
-				c.Set(tokenKey, tokenHandlers[route.TokenKey](c, token))
+				if handler, ok := tokenHandlers[route.TokenKey]; ok {
+					c.Set(tokenKey, handler(c, token))
+				} else {
+					common.Logger.Warn("tokenkey no found", route)
+				}
 			} else {
 				c.Set(tokenKey, nil)
 			}
