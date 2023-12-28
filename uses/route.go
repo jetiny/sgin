@@ -29,7 +29,7 @@ func withRoute(r *gin.Engine, routes []*common.Route, tokenHandlers map[string]c
 		}
 	})
 	for _, route := range routes {
-		handler.Handle(route.Method, route.Path, route.Handle)
+		handler.Handle(route.Method, route.Path, gin.HandlerFunc(route.Handle))
 	}
 }
 

@@ -80,6 +80,14 @@ const (
 	LogOpDrop   LogOpType = 4 // 彻底删除记录
 )
 
+type RouteHandler func(ctx *gin.Context)
+
+func (s RouteHandler) Route() *Route {
+	return &Route{
+		Handle: s,
+	}
+}
+
 // 路由定义
 type Route struct {
 	Name       string
@@ -88,8 +96,43 @@ type Route struct {
 	Method     string
 	EnsureAuth bool
 	NoAppCode  bool
-	Handle     gin.HandlerFunc
+	Handle     RouteHandler
 	TokenKey   string
+}
+
+func (s *Route) WithPath(value string) *Route {
+	s.Path = value
+	return s
+}
+
+func (s *Route) WithMethod(value string) *Route {
+	s.Method = value
+	return s
+}
+
+func (s *Route) WithName(value string) *Route {
+	s.Name = value
+	return s
+}
+
+func (s *Route) WithLabel(value string) *Route {
+	s.Label = value
+	return s
+}
+
+func (s *Route) WithTokenKey(value string) *Route {
+	s.TokenKey = value
+	return s
+}
+
+func (s *Route) WithAuth(value bool) *Route {
+	s.EnsureAuth = value
+	return s
+}
+
+func (s *Route) WithNoAppCode(value bool) *Route {
+	s.NoAppCode = value
+	return s
 }
 
 type RouteQS struct {
@@ -132,7 +175,7 @@ func (s *RouteQS) WithAuth(value bool) *RouteQS {
 	return s
 }
 
-func (s *RouteQS) WithAppCode(value bool) *RouteQS {
+func (s *RouteQS) WithNoAppCode(value bool) *RouteQS {
 	s.route.NoAppCode = value
 	s.NoAppCode = &s.route.NoAppCode
 	return s
