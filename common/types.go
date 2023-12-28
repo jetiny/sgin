@@ -135,6 +135,10 @@ func (s *Route) WithNoAppCode(value bool) *Route {
 	return s
 }
 
+func NewRoute(path string, handler RouteHandler) *Route {
+	return handler.Route().WithPath(path)
+}
+
 type RouteQS struct {
 	route      Route
 	Name       *string
