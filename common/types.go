@@ -135,7 +135,7 @@ func (s *Route) WithNoAppCode(value bool) *Route {
 	return s
 }
 
-func NewRoute(path string, handler RouteHandler) *Route {
+func newRoute(path string, handler RouteHandler) *Route {
 	return handler.Route().WithPath(path)
 }
 
@@ -147,12 +147,6 @@ type RouteQS struct {
 	EnsureAuth *bool
 	NoAppCode  *bool
 	TokenKey   *string
-}
-
-func NewRouteQS() *RouteQS {
-	return &RouteQS{
-		route: Route{},
-	}
 }
 
 func (s *RouteQS) WithName(value string) *RouteQS {
@@ -189,4 +183,25 @@ func (s *RouteQS) WithTokenKey(value string) *RouteQS {
 	s.route.TokenKey = value
 	s.TokenKey = &s.route.TokenKey
 	return s
+}
+
+type RouteBuilder struct {
+	RouteQS
+	routes []*Route
+}
+
+func NewRouteBuidler() *RouteBuilder {
+	s := &RouteBuilder{
+		routes: make([]*Route, 0),
+	}
+	return s
+}
+
+func (s *RouteBuilder) AddRoute(path string, handler RouteHandler) *RouteBuilder {
+	s.routes = append(s.routes, newRoute(path, handler))
+	return s
+}
+
+func (s *RouteBuilder) Result() ([]*Route, *RouteQS) {
+	return s.routes, &s.RouteQS
 }
