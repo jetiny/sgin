@@ -135,10 +135,6 @@ func (s *Route) WithNoAppCode(value bool) *Route {
 	return s
 }
 
-func newRoute(path string, handler RouteHandler) *Route {
-	return handler.Route().WithPath(path)
-}
-
 type RouteQS struct {
 	route      Route
 	Name       *string
@@ -147,42 +143,6 @@ type RouteQS struct {
 	EnsureAuth *bool
 	NoAppCode  *bool
 	TokenKey   *string
-}
-
-func (s *RouteQS) WithName(value string) *RouteQS {
-	s.route.Name = value
-	s.Name = &s.route.Name
-	return s
-}
-
-func (s *RouteQS) WithLabel(value string) *RouteQS {
-	s.route.Label = value
-	s.Label = &s.route.Label
-	return s
-}
-
-func (s *RouteQS) WithMethod(value string) *RouteQS {
-	s.route.Method = value
-	s.Method = &s.route.Method
-	return s
-}
-
-func (s *RouteQS) WithAuth(value bool) *RouteQS {
-	s.route.EnsureAuth = value
-	s.EnsureAuth = &s.route.EnsureAuth
-	return s
-}
-
-func (s *RouteQS) WithNoAppCode(value bool) *RouteQS {
-	s.route.NoAppCode = value
-	s.NoAppCode = &s.route.NoAppCode
-	return s
-}
-
-func (s *RouteQS) WithTokenKey(value string) *RouteQS {
-	s.route.TokenKey = value
-	s.TokenKey = &s.route.TokenKey
-	return s
 }
 
 type RouteBuilder struct {
@@ -198,7 +158,43 @@ func NewRouteBuidler() *RouteBuilder {
 }
 
 func (s *RouteBuilder) AddRoute(path string, handler RouteHandler) *RouteBuilder {
-	s.routes = append(s.routes, newRoute(path, handler))
+	s.routes = append(s.routes, handler.Route().WithPath(path))
+	return s
+}
+
+func (s *RouteBuilder) WithName(value string) *RouteBuilder {
+	s.route.Name = value
+	s.Name = &s.route.Name
+	return s
+}
+
+func (s *RouteBuilder) WithLabel(value string) *RouteBuilder {
+	s.route.Label = value
+	s.Label = &s.route.Label
+	return s
+}
+
+func (s *RouteBuilder) WithMethod(value string) *RouteBuilder {
+	s.route.Method = value
+	s.Method = &s.route.Method
+	return s
+}
+
+func (s *RouteBuilder) WithAuth(value bool) *RouteBuilder {
+	s.route.EnsureAuth = value
+	s.EnsureAuth = &s.route.EnsureAuth
+	return s
+}
+
+func (s *RouteBuilder) WithNoAppCode(value bool) *RouteBuilder {
+	s.route.NoAppCode = value
+	s.NoAppCode = &s.route.NoAppCode
+	return s
+}
+
+func (s *RouteBuilder) WithTokenKey(value string) *RouteBuilder {
+	s.route.TokenKey = value
+	s.TokenKey = &s.route.TokenKey
 	return s
 }
 
