@@ -45,6 +45,30 @@ func GetBootContext() *BootContext {
 	return gBootContext
 }
 
+func (s *BootContext) WithRoutesQs(routes []*Route, routeQS *RouteQS) {
+	for _, v := range routes {
+		if routeQS.EnsureAuth != nil {
+			v.EnsureAuth = *routeQS.EnsureAuth
+		}
+		if routeQS.NoAppCode != nil {
+			v.NoAppCode = *routeQS.NoAppCode
+		}
+		if routeQS.Method != nil {
+			v.Method = *routeQS.Method
+		}
+		if routeQS.TokenKey != nil {
+			v.TokenKey = *routeQS.TokenKey
+		}
+		if routeQS.Label != nil {
+			v.Label = *routeQS.Label
+		}
+		if routeQS.Name != nil {
+			v.Name = *routeQS.Name
+		}
+		s.Routes = append(s.Routes, v)
+	}
+}
+
 func (s *BootContext) WithRoutes(routes ...[]*Route) {
 	for _, v := range routes {
 		s.Routes = append(s.Routes, v...)

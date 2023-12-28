@@ -83,10 +83,63 @@ const (
 // 路由定义
 type Route struct {
 	Name       string
+	Label      string
 	Path       string
 	Method     string
 	EnsureAuth bool
 	NoAppCode  bool
 	Handle     gin.HandlerFunc
 	TokenKey   string
+}
+
+type RouteQS struct {
+	route      Route
+	Name       *string
+	Label      *string
+	Method     *string
+	EnsureAuth *bool
+	NoAppCode  *bool
+	TokenKey   *string
+}
+
+func NewRouteQS() *RouteQS {
+	return &RouteQS{
+		route: Route{},
+	}
+}
+
+func (s *RouteQS) WithName(value string) *RouteQS {
+	s.route.Name = value
+	s.Name = &s.route.Name
+	return s
+}
+
+func (s *RouteQS) WithLabel(value string) *RouteQS {
+	s.route.Label = value
+	s.Label = &s.route.Label
+	return s
+}
+
+func (s *RouteQS) WithMethod(value string) *RouteQS {
+	s.route.Method = value
+	s.Method = &s.route.Method
+	return s
+}
+
+func (s *RouteQS) WithAuth(value bool) *RouteQS {
+	s.route.EnsureAuth = value
+	s.EnsureAuth = &s.route.EnsureAuth
+	return s
+}
+
+func (s *RouteQS) WithAppCode(value bool) *RouteQS {
+	s.route.NoAppCode = value
+	s.NoAppCode = &s.route.NoAppCode
+	return s
+}
+
+func (s *RouteQS) WithTokenKey(value string) *RouteQS {
+	s.route.TokenKey = value
+	s.TokenKey = &s.route.TokenKey
+	return s
 }
