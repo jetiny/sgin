@@ -18,6 +18,10 @@ import (
 
 var gxormLogger *xorm.SimpleLogger
 
+func GetOrmLogger() *xorm.SimpleLogger {
+	return gxormLogger
+}
+
 func initLogger() error {
 	logFilePath := gEnvLogDir.String()
 	logFileName := gEnvLogFileName.String()
