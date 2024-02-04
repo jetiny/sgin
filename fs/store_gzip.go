@@ -17,8 +17,9 @@ func NewGzipOption() FileStoreOption {
 	r := gzipStoreOption{}
 	r.FileStoreOption.OnAfterCloseFile = func(file string) error {
 		if r.opath != "" {
+			opath := r.opath
 			r.opath = ""
-			return os.Remove(r.opath)
+			return os.Remove(opath)
 		} else if r.cpath != "" {
 			cpath := r.cpath
 			r.cpath = ""
