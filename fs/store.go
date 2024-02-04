@@ -219,7 +219,7 @@ func (p *fileStore) Close() error {
 }
 
 func (p *fileStore) IsEOF(err error) bool {
-	return errors.Is(err, io.ErrUnexpectedEOF)
+	return errors.Is(err, io.ErrUnexpectedEOF) || errors.Is(err, io.EOF)
 }
 
 func (p *fileStore) ReadBuffer() ([]byte, error) {
