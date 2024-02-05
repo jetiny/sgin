@@ -2,7 +2,7 @@ package fs
 
 import "crypto/rc4"
 
-func NewMixOption(key string) FileStoreOption {
+func NewContentMixOption(key string) FileStoreOption {
 	res := FileStoreOption{}
 	if key != "" {
 		process := func(encodeBytes []byte) ([]byte, error) {

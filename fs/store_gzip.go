@@ -13,8 +13,19 @@ type gzipStoreOption struct {
 	opath string
 }
 
-func NewGzipOption() FileStoreOption {
-	r := gzipStoreOption{}
+type GzipStoreConfig struct {
+	Encoder Encoder
+	Decoder Decoder
+}
+
+func NewGzipOption(option *GzipStoreConfig) FileStoreOption {
+	var enc Encoder = nil
+	var dec Decoder = nil
+	if option != nil {
+		enc = option.Encoder
+		dec = option.Decoder
+	}
+	r := &gzipStoreOption{}
 	r.FileStoreOption.OnAfterCloseFile = func(file string) error {
 		if r.opath != "" {
 			opath := r.opath
@@ -25,7 +36,19 @@ func NewGzipOption() FileStoreOption {
 			r.cpath = ""
 			defer os.Remove(cpath)
 			err := CompressFile(cpath, file)
-			return err
+			if err != nil {
+				return err
+			}
+			if enc != nil {
+				newFile, e := enc.Encode(file)
+				if e != nil {
+					return e
+				}
+				err = os.Rename(newFile, file)
+				if err != nil {
+					return err
+				}
+			}
 		}
 		return nil
 	}
@@ -35,6 +58,13 @@ func NewGzipOption() FileStoreOption {
 		return newFile, nil
 	}
 	r.FileStoreOption.OnBeforeOpenFile = func(file string) (string, error) {
+		if dec != nil {
+			decFile, e := dec.Decode(file)
+			if e != nil {
+				return "", e
+			}
+			file = decFile
+		}
 		newFile := filepath.Join(os.TempDir(), utils.Uuid())
 		err := DecompressFile(file, newFile)
 		if err != nil {

@@ -9,7 +9,12 @@ import (
 )
 
 func TestStore(t *testing.T) {
-	s := NewFileStore(NewGzipOption(), NewMixOption("ss"))
+	pub, pri, err := RsaKeyDefault.Create()
+	assert.NoError(t, err)
+	s := NewFileStore(NewGzipOption(&GzipStoreConfig{
+		Encoder: MixTypeDefault.NewEncoder(pub),
+		Decoder: MixTypeDefault.NewDecoder(pri),
+	}), NewContentMixOption("ss"))
 	filename := filepath.Join(os.TempDir(), "test.txt")
 	{
 		err := s.Create(filename)
@@ -37,7 +42,7 @@ func TestStore(t *testing.T) {
 }
 
 func TestStoreTypes(t *testing.T) {
-	s := NewFileStore(NewGzipOption(), NewMixOption("ss"))
+	s := NewFileStore(NewGzipOption(nil), NewContentMixOption("ss"))
 	filename := filepath.Join(os.TempDir(), "test.txt")
 	{
 		err := s.Create(filename)
