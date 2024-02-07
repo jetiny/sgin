@@ -81,7 +81,7 @@ func boot(features BootFeature) (*common.BootContext, error) {
 		res.Redis = rds
 	}
 	if hasFeature(features, BootWithOrm) {
-		engine, err := initMysql()
+		engine, err := initDb()
 		if err != nil {
 			return nil, bootError("mysql", err)
 		}
