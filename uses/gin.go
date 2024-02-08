@@ -32,7 +32,9 @@ func Setup(ctx *common.BootContext, r *gin.Engine) {
 	if ctx.Tasks != nil {
 		r.Use(withTask(ctx.Tasks))
 	}
-	if ctx.Routes != nil && len(ctx.Routes) > 0 {
-		withRoute(r, ctx.Routes, ctx.TokenHandlers)
+	routes := ctx.Routes
+	if routes == nil {
+		routes = make([]*common.Route, 0)
 	}
+	withRoute(r, routes, ctx.TokenHandlers)
 }
