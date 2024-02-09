@@ -17,6 +17,16 @@ type UserToken struct {
 	AccessExpiredAt  time.Time `json:"accessExpiredAt"`
 	RefreshExpiredAt time.Time `json:"refreshExpiredAt"`
 	TokenKey         string    `json:"tokenKey"`
+	IsJwt            bool      `json:"isJwt"`
+	userData         any
+}
+
+func (s *UserToken) SetUserData(data any) {
+	s.userData = data
+}
+
+func (s *UserToken) GetUserData() any {
+	return s.userData
 }
 
 func (s UserToken) IsTokenExpired() bool {
