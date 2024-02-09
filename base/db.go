@@ -10,11 +10,6 @@ import (
 func initDb() (*xorm.Engine, error) {
 	engineType := gEnvDbEngine.String()
 	engineAddr := gEnvDbAddress.String()
-	if engineType == "mysql" {
-		if engineAddr == "" {
-			engineAddr = gEnvMysqlAddr.String()
-		}
-	}
 	engine, err := xorm.NewEngine(engineType, engineAddr)
 	if err != nil {
 		return nil, err

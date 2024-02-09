@@ -16,10 +16,9 @@ var (
 	gEnvRedisAddr     *utils.EnvGetter = utils.GetterDefault("REDIS_ADDR", "0.0.0.0:6379")
 	gEnvRedisPassword *utils.EnvGetter = utils.GetterDefault("REDIS_PASSWD", "")
 	gEnvRedisDb       *utils.EnvGetter = utils.GetterDefault("REDIS_DB", 0)
-	// Mysql
-	gEnvDbEngine  *utils.EnvGetter = utils.GetterDefault("DV_ENGINE", "")
-	gEnvDbAddress *utils.EnvGetter = utils.GetterDefault("DV_ADDRESS", "")
-	gEnvMysqlAddr *utils.EnvGetter = utils.GetterDefault("MYSQL_ADDR", "root@tcp(127.0.0.1:3306)/demo?charset=utf8mb4&interpolateParams=true&parseTime=true&loc=Local")
+	// DB
+	gEnvDbEngine  *utils.EnvGetter = utils.GetterDefault("DB_ENGINE", "mysql")
+	gEnvDbAddress *utils.EnvGetter = utils.GetterDefault("DB_ADDRESS", "")
 	// Session
 	gEnvSessionSecret       *utils.EnvGetter = utils.GetterDefault("SESSION_SECRET", "ss")
 	gEnvSessionStorePrefix  *utils.EnvGetter = utils.GetterDefault("SESSION_PREFIX", "ss:")
