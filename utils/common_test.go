@@ -47,3 +47,18 @@ func TestSnow(t *testing.T) {
 		}
 	}
 }
+
+func TestUuid(t *testing.T) {
+	{
+		value := HashUuid()
+		if len(value) != 32 {
+			t.Error(value)
+		}
+	}
+	{
+		value := ShortUuid()
+		if len(value) != 8 {
+			t.Error(value)
+		}
+	}
+}

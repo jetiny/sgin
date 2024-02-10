@@ -19,6 +19,16 @@ func Uuid() string {
 	return id
 }
 
+func ShortUuid() string {
+	id := uuid.NewV4().String()
+	return id[:8]
+}
+
+func HashUuid() string {
+	id := uuid.NewV4().String()
+	return strings.Replace(id, "-", "", -1)
+}
+
 var flakeNode *snowflake.Node
 
 func InitSnowflake(node int64) error {
