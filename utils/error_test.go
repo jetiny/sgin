@@ -8,7 +8,7 @@ import (
 )
 
 func TestStringError(t *testing.T) {
-	_, err := Call2(func() (*any, error) {
+	_, err := Call2(func() (any, error) {
 		panic("test error")
 	})
 	if err == nil {
@@ -17,7 +17,7 @@ func TestStringError(t *testing.T) {
 }
 
 func TestIntError(t *testing.T) {
-	_, err := Call2(func() (*any, error) {
+	_, err := Call2(func() (any, error) {
 		panic(1)
 	})
 	if e, ok := err.(*gerror.Error); !ok || e.Error() != "1" {
@@ -26,7 +26,7 @@ func TestIntError(t *testing.T) {
 }
 
 func TestErrorError(t *testing.T) {
-	_, err := Call2(func() (*any, error) {
+	_, err := Call2(func() (any, error) {
 		panic(errors.ErrUnsupported)
 	})
 	if err != errors.ErrUnsupported {
@@ -35,7 +35,7 @@ func TestErrorError(t *testing.T) {
 }
 
 func TestClientError(t *testing.T) {
-	_, err := Call2(func() (*any, error) {
+	_, err := Call2(func() (any, error) {
 		BadRequest.Panic()
 		return nil, nil
 	})
@@ -45,7 +45,7 @@ func TestClientError(t *testing.T) {
 }
 
 func TestWrap3(t *testing.T) {
-	f := Wrap3(func() (*any, *any, error) {
+	f := Wrap3(func() (any, any, error) {
 		defer func() {
 			panic(errors.New("test error"))
 		}()
@@ -58,7 +58,7 @@ func TestWrap3(t *testing.T) {
 }
 
 func TestWrap2(t *testing.T) {
-	f := Wrap2(func() (*any, error) {
+	f := Wrap2(func() (any, error) {
 		defer func() {
 			panic(errors.New("test error"))
 		}()
@@ -96,7 +96,7 @@ func TestCall(t *testing.T) {
 }
 
 func TestCall2(t *testing.T) {
-	_, err := Call2(func() (*any, error) {
+	_, err := Call2(func() (any, error) {
 		defer func() {
 			panic(errors.New("test error"))
 		}()
@@ -109,7 +109,7 @@ func TestCall2(t *testing.T) {
 
 func TestCall3(t *testing.T) {
 	{
-		_, _, err := Call3(func() (*any, *any, error) {
+		_, _, err := Call3(func() (any, any, error) {
 			defer func() {
 				panic(errors.New("test error"))
 			}()
@@ -120,14 +120,14 @@ func TestCall3(t *testing.T) {
 		}
 	}
 	{
-		v1, v2, err := Call3(func() (*int, *int, error) {
+		v1, v2, err := Call3(func() (int, int, error) {
 			n := 10
-			return &n, &n, nil
+			return n, n, nil
 		})
 		if err != nil {
 			t.Error("error should be nil")
 		}
-		if *v1 != 10 || *v2 != 10 {
+		if v1 != 10 || v2 != 10 {
 			t.Error("v1 and v2 should be 10")
 		}
 	}
@@ -144,7 +144,7 @@ func TestCallNoop(t *testing.T) {
 
 func TestCallType(t *testing.T) {
 	{
-		_, err := CallType(func() *any {
+		_, err := CallType(func() any {
 			defer func() {
 				panic(errors.New("test error"))
 			}()
