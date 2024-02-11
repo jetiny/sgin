@@ -168,3 +168,9 @@ func EnsureIgnoreFirstNoError(count any, err error) {
 		panic(err)
 	}
 }
+
+func EnsureFound(value any) {
+	if value == nil {
+		NotFound.Panic()
+	}
+}
