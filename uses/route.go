@@ -16,6 +16,9 @@ func withRoute(r *gin.Engine, routes []*common.Route, tokenHandlers map[string]c
 		route := getRoute(c)
 		if route != nil {
 			token := c.Request.Header.Get(gEnvHeaderAccessToken.String())
+			if token == "" {
+				token = c.Query(gEnvQueryAccessToken.String())
+			}
 			if token != "" {
 				if handler, ok := tokenHandlers[route.TokenKey]; ok {
 					c.Set(tokenKey, handler(c, token))

@@ -9,6 +9,7 @@ var (
 	// Auth
 	gEnvHeaderAppCode     *utils.EnvGetter = utils.GetterDefault("HEADER_APP_CODE", "App-Code")
 	gEnvHeaderAccessToken *utils.EnvGetter = utils.GetterDefault("HEADER_ACCESS_TOKEN", "Access-Token")
+	gEnvQueryAccessToken  *utils.EnvGetter = utils.GetterDefault("QUERY_ACCESS_TOKEN", "token")
 	// Cors
 	gEnvCorsAllowOrigins  = utils.GetterDefault("CORS_ALLOW_ORIGINS", "*")
 	gEnvCorsAllowMethods  = utils.GetterDefault("CORS_ALLOW_METHODS", "*")
