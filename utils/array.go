@@ -195,7 +195,30 @@ func (arr *SimpleArray[T]) Delete(e T) bool {
 	return false
 }
 
-func (arr SimpleArray[T]) DeleteMany(e T) int {
+func (arr *SimpleArray[T]) DeleteMany(e ...T) int {
+	n := 0
+	for _, v := range e {
+		if arr.Delete(v) {
+			n++
+		}
+	}
+	return n
+}
+
+func (arr SimpleArray[T]) DeleteManyAll(e ...T) int {
+	n := 0
+	for i := len(arr) - 1; i >= 0; i-- {
+		for _, v := range e {
+			if arr[i] == v {
+				arr.Remove(i)
+				n++
+			}
+		}
+	}
+	return n
+}
+
+func (arr SimpleArray[T]) DeleteAll(e T) int {
 	n := 0
 	for i := len(arr) - 1; i >= 0; i-- {
 		if arr[i] == e {

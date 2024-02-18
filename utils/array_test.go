@@ -42,7 +42,7 @@ func TestSimpleArray(t *testing.T) {
 	if !a.Delete(4) {
 		t.Error("SimpleArray.Delete(4) should be true")
 	}
-	if a.DeleteMany(4) != 2 {
+	if a.DeleteAll(4) != 2 {
 		t.Error("SimpleArray.DeleteMany(4) should be 2")
 	}
 }
