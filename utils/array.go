@@ -1,6 +1,9 @@
 package utils
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 // 数组定义
 type Array[T any] []T
@@ -91,16 +94,33 @@ func (arr *Array[T]) Filter(f func(any any) bool) Array[T] {
 	return result
 }
 
-type ArrayType interface {
-	string | int
+//-------
+
+type SimpleType interface {
+	~string | ~bool | ~int8 | ~int16 | ~int32 | ~int64 | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~int
 }
 
-func ArrayContains[T ArrayType](arr *Array[T], e T) bool {
-	return ArrayIndexOf(arr, e) == -1
+type SimpleArray[T SimpleType] []T
+
+func (arr SimpleArray[T]) Join(sep string) string {
+	list := []string{}
+	for _, v := range arr {
+		list = append(list, fmt.Sprintf("%v", v))
+	}
+	return strings.Join(list, sep)
 }
 
-func ArrayIndexOf[T ArrayType](arr *Array[T], e T) int {
-	for i, v := range *arr {
+func (arr SimpleArray[T]) Contains(e T) bool {
+	for _, v := range arr {
+		if v == e {
+			return true
+		}
+	}
+	return false
+}
+
+func (arr SimpleArray[T]) IndexOf(e T) int {
+	for i, v := range arr {
 		if v == e {
 			return i
 		}
@@ -108,8 +128,66 @@ func ArrayIndexOf[T ArrayType](arr *Array[T], e T) int {
 	return -1
 }
 
-func ArrayDelete[T ArrayType](arr *Array[T], e T) bool {
-	idx := ArrayIndexOf(arr, e)
+func (arr SimpleArray[T]) LastIndexOf(e T) int {
+	for i := len(arr) - 1; i >= 0; i-- {
+		if arr[i] == e {
+			return i
+		}
+	}
+	return -1
+}
+
+func (arr *SimpleArray[T]) Push(e ...T) {
+	*arr = append(*arr, e...)
+}
+
+func (arr *SimpleArray[T]) Unshift(e ...T) {
+	*arr = append(e, *arr...)
+}
+
+func (arr *SimpleArray[T]) Insert(i int, e ...T) {
+	n := len(*arr)
+	if i > n-1 {
+		return
+	}
+	// 构造需要插入元素的切片
+	inserts := SimpleArray[T]{}
+	inserts = append(inserts, e...)
+
+	// 重新构造切片数组
+	result := SimpleArray[T]{}
+	result = append(result, (*arr)[:i]...)
+	result = append(result, inserts...)
+	result = append(result, (*arr)[i:]...)
+	*arr = result
+}
+
+func (arr *SimpleArray[T]) Concat(next SimpleArray[T]) {
+	*arr = append(*arr, next...)
+}
+
+func (arr SimpleArray[T]) ForEach(f func(e T)) {
+	for _, v := range arr {
+		f(v)
+	}
+}
+
+func (arr SimpleArray[T]) Filter(f func(T) bool) SimpleArray[T] {
+	result := SimpleArray[T]{}
+	for _, v := range arr {
+		if f(v) {
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
+func (arr *SimpleArray[T]) Remove(i int) {
+	*arr = append((*arr)[:i], (*arr)[i+1:]...)
+}
+
+func (arr *SimpleArray[T]) Delete(e T) bool {
+	idx := arr.IndexOf(e)
 	if idx != -1 {
 		arr.Remove(idx)
 		return true
@@ -117,12 +195,21 @@ func ArrayDelete[T ArrayType](arr *Array[T], e T) bool {
 	return false
 }
 
-func ArrayDeleteMany[T ArrayType](arr *Array[T], e ...T) {
-	for _, v := range e {
-		ArrayDelete(arr, v)
+func (arr SimpleArray[T]) DeleteMany(e T) int {
+	n := 0
+	for i := len(arr) - 1; i >= 0; i-- {
+		if arr[i] == e {
+			arr.Remove(i)
+			n++
+		}
 	}
+	return n
 }
 
-func ArrayJoin(arr *Array[string], sep string) string {
-	return strings.Join([]string(*arr), sep)
+func (arr SimpleArray[T]) Map(f func(T) T) SimpleArray[T] {
+	result := SimpleArray[T]{}
+	for _, v := range arr {
+		result = append(result, f(v))
+	}
+	return result
 }

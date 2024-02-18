@@ -3,6 +3,7 @@ package base
 import (
 	"errors"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -52,7 +53,9 @@ func boot(features BootFeature) (*common.BootContext, error) {
 	if hasFeature(features, BootWithEnv) {
 		err := godotenv.Load()
 		if err != nil {
-			return nil, bootError("env", err)
+			if !os.IsNotExist(err) {
+				return nil, bootError("env", err)
+			}
 		}
 	}
 	if hasFeature(features, BootWithLogger) {
