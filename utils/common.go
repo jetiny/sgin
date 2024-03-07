@@ -40,6 +40,10 @@ func InitSnowflake(node int64) error {
 	return nil
 }
 
+func init() {
+	InitSnowflake(1)
+}
+
 func SnowId() int64 {
 	return flakeNode.Generate().Int64()
 }
