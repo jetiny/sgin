@@ -15,7 +15,7 @@ const redisKey = "redisKey"
 
 func withRedis(engine *redis.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set(redisKey, &rediCache{r: engine, c: c})
+		c.Set(redisKey, &rediCache{r: engine})
 		c.Next()
 	}
 }
@@ -26,7 +26,6 @@ func getRedis(c *gin.Context) *rediCache {
 }
 
 type rediCache struct {
-	c *gin.Context
 	r *redis.Client
 }
 
