@@ -54,7 +54,7 @@ func (ctx *Ctx) Success(data any) {
 }
 
 func (ctx *Ctx) Page(data any, total int64) {
-	ctx.pageInfo.Total = total
+	ctx.PageInfo().Total = total
 	res := utils.Data[any]{
 		Code:     gHttpSuccessCode,
 		Data:     data,
