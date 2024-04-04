@@ -15,7 +15,7 @@ var (
 
 	// IP
 	EnvIPUseCwd   *utils.EnvGetter = utils.GetterDefault("IP_USE_CWD", false)
-	EnvIPDatabase *utils.EnvGetter = utils.GetterDefault("IP_DATABASE", "./GeoIP2-City.mmdb")
+	EnvIPDatabase *utils.EnvGetter = utils.GetterDefault("IP_DATABASE", "./GeoLite2-City.mmdb")
 
 	// Redis
 	gEnvRedisAddr     *utils.EnvGetter = utils.GetterDefault("REDIS_ADDR", "0.0.0.0:6379")
