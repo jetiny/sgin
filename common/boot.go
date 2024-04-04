@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/go-xorm/xorm"
+	"github.com/oschwald/geoip2-golang"
 	"github.com/sirupsen/logrus"
 )
 
@@ -25,6 +26,7 @@ type BootContext struct {
 	Tasks          map[string][]gin.HandlerFunc
 	Addr           string
 	data           sync.Map
+	IpEngine       *geoip2.Reader
 }
 
 var gBootContext *BootContext

@@ -47,6 +47,11 @@ func GetterDefault[T int | int8 | int16 | int32 | int64 |
 	return getterOf(key, defaultValue, reflect.TypeOf(defaultValue).Kind())
 }
 
+func (getter *EnvGetter) WithDefault(value any) *EnvGetter {
+	getter.defaultValue = value
+	return getter
+}
+
 func (getter *EnvGetter) KeyName() string {
 	return string(getter.Key)
 }

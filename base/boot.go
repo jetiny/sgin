@@ -27,8 +27,10 @@ const (
 	BootWithOrm BootFeature = 1 << 3
 	// 使用Logger
 	BootWithLogger BootFeature = 1 << 4
+	// 使用Ip
+	BootWithIp BootFeature = 1 << 5
 	// 默认全部开启
-	BootWithAll BootFeature = BootWithEnv |
+	BootWithDefault BootFeature = BootWithEnv |
 		BootWithSession |
 		BootWithRedis |
 		BootWithOrm |
@@ -48,7 +50,7 @@ func boot(features BootFeature) (*common.BootContext, error) {
 		Routes:        make([]*common.Route, 0),
 		Tasks:         make(map[string][]gin.HandlerFunc),
 		TokenHandlers: make(map[string]common.TokenHandler),
-		Addr:          gEnvHost.String() + ":" + strconv.Itoa(gEnvPort.Int()),
+		Addr:          EnvHost.String() + ":" + strconv.Itoa(EnvPort.Int()),
 	}
 	if hasFeature(features, BootWithEnv) {
 		err := godotenv.Load()
@@ -65,7 +67,7 @@ func boot(features BootFeature) (*common.BootContext, error) {
 		}
 		res.Logger = common.Logger
 	}
-	err := utils.InitSnowflake(int64(gEnvNode.Int()))
+	err := utils.InitSnowflake(int64(EnvNode.Int()))
 	if err != nil {
 		return nil, bootError("snowflake", err)
 	}
@@ -92,6 +94,13 @@ func boot(features BootFeature) (*common.BootContext, error) {
 			engine.SetLogger(gxormLogger)
 		}
 		res.Xorm = engine
+	}
+	if hasFeature(features, BootWithIp) {
+		ip, err := initIp()
+		if err != nil {
+			return nil, bootError("ip", err)
+		}
+		res.IpEngine = ip
 	}
 	common.SetBootContext(res)
 	return res, nil

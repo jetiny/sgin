@@ -12,7 +12,7 @@ func MustBoot(features base.BootFeature) *common.BootContext {
 }
 
 func MustBootAll() *common.BootContext {
-	return base.MustBoot(base.BootWithAll)
+	return base.MustBoot(base.BootWithDefault)
 }
 
 func GetCtx(c *gin.Context) *uses.Ctx {

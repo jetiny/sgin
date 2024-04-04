@@ -1,8 +1,11 @@
 package uses
 
 import (
+	"net"
+
 	"github.com/jetiny/sgin/common"
 	"github.com/jetiny/sgin/utils"
+	"github.com/oschwald/geoip2-golang"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -95,6 +98,14 @@ func (ctx *Ctx) GetToken() *common.UserToken {
 
 func (ctx *Ctx) Route() *common.Route {
 	return getRoute(ctx.c)
+}
+
+func (ctx *Ctx) Ip() string {
+	return ctx.c.ClientIP()
+}
+
+func (ctx *Ctx) GetIpInfo() (*geoip2.City, error) {
+	return getIp(ctx.c).City(net.ParseIP(ctx.c.ClientIP()))
 }
 
 func (ctx *Ctx) Stack(value ...any) {

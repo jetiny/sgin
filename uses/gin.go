@@ -7,6 +7,9 @@ import (
 )
 
 func Setup(ctx *common.BootContext, r *gin.Engine) {
+	if ctx.IpEngine != nil {
+		r.Use(withIp(ctx.IpEngine))
+	}
 	r.Use(withCors())
 	r.Use(withCtx())
 	if ctx.SessionHandle != nil {

@@ -8,9 +8,14 @@ import (
 
 var (
 	//Server
-	gEnvHost *utils.EnvGetter = utils.GetterDefault("HOST", "0.0.0.0")
-	gEnvPort *utils.EnvGetter = utils.GetterDefault("PORT", 8888)
-	gEnvNode *utils.EnvGetter = utils.GetterDefault("Node", 1)
+	EnvHost           *utils.EnvGetter = utils.GetterDefault("HOST", "0.0.0.0")
+	EnvPort           *utils.EnvGetter = utils.GetterDefault("PORT", 8888)
+	EnvNode           *utils.EnvGetter = utils.GetterDefault("Node", 1)
+	EnvServerEndpoint *utils.EnvGetter = utils.GetterDefault("SERVER_ENDPOINT", "")
+
+	// IP
+	EnvIPUseCwd   *utils.EnvGetter = utils.GetterDefault("IP_USE_CWD", false)
+	EnvIPDatabase *utils.EnvGetter = utils.GetterDefault("IP_DATABASE", "./GeoIP2-City.mmdb")
 
 	// Redis
 	gEnvRedisAddr     *utils.EnvGetter = utils.GetterDefault("REDIS_ADDR", "0.0.0.0:6379")
